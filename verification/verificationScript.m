@@ -1,6 +1,6 @@
 
 set_parameters      = 1;
-simulate_model      = 0;
+simulate_model      = 1;
 compare_results     = 1;
 
 if set_parameters
@@ -9,6 +9,10 @@ if set_parameters
 end
 
 if simulate_model
+    % turn off warning about visualization
+    warnStruct = warning('off','Simulink:Engine:UINotUpdatedDuringRapidAccelSim');
+    warning(warnStruct);
+    
     tic
     this_output = sim('nmsRR' ,'SimulationMode','rapid');
     t_total = toc;
