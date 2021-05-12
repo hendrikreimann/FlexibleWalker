@@ -28,14 +28,19 @@ mParams.muscles.c    =  0.05; %[]; remaining force at +/- width
 
 % CE force-velocity relationship
 mParams.muscles.N    =   1.5; %[Fmax] eccentric force enhancement
-mParams.muscles.K    =     5; %[] shape factor
 
 % Series elastic element (SE) force-length relationship
 mParams.muscles.eref =  0.04; %[lslack] tendon reference strain
+mParams.muscles.K    =     5; %[] shape factor
 
 % Damping factor
-
 mParams.muscles.beta= 0.1;
+
+% stretch reflex
+mParams.muscles.K_l  =     5; %[] shape factor
+mParams.muscles.K_v  =  0.03; %[] shape factor
+mParams.muscles.h    =  0.65; %[] resting level
+
 
 % Muscle-specific parameters (vectoried)
 % --------------------------------------

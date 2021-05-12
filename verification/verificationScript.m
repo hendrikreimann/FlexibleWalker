@@ -10,7 +10,7 @@ end
 
 if simulate_model
     % turn off warning about visualization
-    warnStruct = warning('off','Simulink:Engine:UINotUpdatedDuringRapidAccelSim');
+    warnStruct = warning('off', 'Simulink:Engine:UINotUpdatedDuringRapidAccelSim');
     warning(warnStruct);
     
     tic
