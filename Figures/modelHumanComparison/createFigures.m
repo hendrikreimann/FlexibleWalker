@@ -68,49 +68,50 @@ midswing_ratio_means = mean(midswing_ratio);
 T_normalized = 200;
 time_model = linspace(0, T_normalized, 201);
 time_human = linspace(0, T_normalized, 101);
+figure_size = [800 300];
 
 % plot 
+linewidth = 6;
 for i_variable = 1 : number_of_variables_to_plot
     
     % create figure
-    figure_size = [800 600];
     figure('position', [50 50 figure_size]); 
     hold on
     set(gca, 'FontSize', 16);
     title(strrep(variables_to_plot{i_variable, 1}, '_', ' '));
     if figure_settings.get('dictate_axes')
-        set(gca, 'ylim', [str2double(variables_to_plot{i_variable, 5}), str2double(variables_to_plot{i_variable, 6})]);
+        set(gca, 'ylim', [str2double(variables_to_plot{i_variable, strcmp(variables_to_plot_header, 'y_axis_lower_limit')}), str2double(variables_to_plot{i_variable, strcmp(variables_to_plot_header, 'y_axis_upper_limit')})]);
     end
     
     % plot model
-%     shadedErrorBar(time_model, variable_means_model{i_variable}', variable_cinvs_model{i_variable}', {'color', color_model, 'linewidth', 9}, 1);
-    shadedErrorBar(time_model, variable_means_model{i_variable}', variable_stds_model{i_variable}', {'color', color_model, 'linewidth', 9}, 1);
+    plots_human = shadedErrorBar(time_human, variable_means_human{i_variable}', variable_stds_human{i_variable}', {'color', color_human, 'linewidth', linewidth}, 1);
+    plots_model = shadedErrorBar(time_model, variable_means_model{i_variable}', variable_stds_model{i_variable}', {'color', color_model, 'linewidth', linewidth}, 1);
     
-    % plot human
-%     shadedErrorBar(time_human, variable_means_human{i_variable}', variable_cinvs_human{i_variable}', {'color', color_human, 'linewidth', 9}, 1);
-    shadedErrorBar(time_human, variable_means_human{i_variable}', variable_stds_human{i_variable}', {'color', color_human, 'linewidth', 9}, 1);
+    % delete edges
+    delete(plots_model.edge);
+    delete(plots_human.edge);
     
-    % mark double stance
-    double_stance_patch_color = figure_settings.get('stance_double_color');
-    midswing_color = figure_settings.get('midswing_color');
-    ylimits = get(gca, 'ylim');
-    
-    patch_x1 = 0;
-    patch_x2 = pushoff_ratio_means(1) * T_normalized/2;
-    patch_x = [patch_x1 patch_x2 patch_x2 patch_x1];
-    patch_y = [ylimits(1) ylimits(1) ylimits(2) ylimits(2)];
-    patch_handle = patch(patch_x, patch_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
-    uistack(patch_handle, 'bottom')
-    
-    patch_x = T_normalized/2 + [patch_x1 patch_x2 patch_x2 patch_x1];
-    patch_handle = patch(patch_x, patch_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
-    uistack(patch_handle, 'bottom')
+%     % mark double stance
+%     double_stance_patch_color = figure_settings.get('stance_double_color');
+%     midswing_color = figure_settings.get('midswing_color');
+%     ylimits = get(gca, 'ylim');
+%     
+%     patch_x1 = 0;
+%     patch_x2 = pushoff_ratio_means(1) * T_normalized/2;
+%     patch_x = [patch_x1 patch_x2 patch_x2 patch_x1];
+%     patch_y = [ylimits(1) ylimits(1) ylimits(2) ylimits(2)];
+%     patch_handle = patch(patch_x, patch_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+%     uistack(patch_handle, 'bottom')
+%     
+%     patch_x = T_normalized/2 + [patch_x1 patch_x2 patch_x2 patch_x1];
+%     patch_handle = patch(patch_x, patch_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+%     uistack(patch_handle, 'bottom')
     
     % mark midswing
-    plot_handle = plot(midswing_ratio_means(1) * T_normalized/2 * [1 1], ylimits, 'color', midswing_color, 'linewidth', 3);
-    uistack(plot_handle, 'bottom')
-    plot_handle = plot((T_normalized/2 + midswing_ratio_means(2) * T_normalized/2) * [1 1], ylimits, 'color', midswing_color, 'linewidth', 3);
-    uistack(plot_handle, 'bottom')
+%     plot_handle = plot(midswing_ratio_means(1) * T_normalized/2 * [1 1], ylimits, 'color', midswing_color, 'linewidth', 3);
+%     uistack(plot_handle, 'bottom')
+%     plot_handle = plot((T_normalized/2 + midswing_ratio_means(2) * T_normalized/2) * [1 1], ylimits, 'color', midswing_color, 'linewidth', 3);
+%     uistack(plot_handle, 'bottom')
     
     if figure_settings.get('remove_labels')
         set(get(gca, 'xaxis'), 'visible', 'off');
@@ -127,8 +128,9 @@ for i_variable = 1 : number_of_variables_to_plot
     if figure_settings.get('save')
         save_folder = [data_root filesep 'modelHumanComparison'];
         filename = [save_folder filesep variables_to_plot{i_variable, strcmp(variables_to_plot_header, 'save file name')}];
-        set(gcf, 'PaperUnits', 'points', 'PaperSize', [800 600]);
-        print(gcf, filename, '-dpdf')
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
+%         print(gcf, filename, '-dpdf')
+        print(gcf, filename, '-dtiff', '-r150')
         
         set(get(gca, 'xaxis'), 'visible', 'off');
         set(get(gca, 'yaxis'), 'visible', 'off');
@@ -140,12 +142,82 @@ for i_variable = 1 : number_of_variables_to_plot
         set(gca, 'position', [0 0 1 1]);
         legend(gca, 'hide');
         filename = [save_folder filesep variables_to_plot{i_variable, strcmp(variables_to_plot_header, 'save file name')} '_clean'];
-        print(gcf, filename, '-dpdf')
+%         print(gcf, filename, '-dpdf')
+        print(gcf, filename, '-dtiff', '-r150')
         close(gcf)
     end
     
 end
 
+if figure_settings.get('make_behavioral_phase_figure')
+    % create figure
+    figure('position', [50 50 figure_size]); 
+    hold on
+    set(gca, 'FontSize', 16);
+    title('behavioral phases');
+    
+%     % mark double stance
+    double_stance_patch_color = figure_settings.get('stance_double_color');
+%     
+    % first step early swing 
+    patch_early_one_x = [0 midswing_ratio_means(1) midswing_ratio_means(1) 0] * 100;
+    patch_early_one_y = [0 0 1 1] + 1;
+    
+    patch_late_one_x = [midswing_ratio_means(1) 1 1 midswing_ratio_means(1)] * 100;
+    patch_late_one_y = [0 0 1 1] + 0;
+    
+    patch_early_two_x = 100 + [0 midswing_ratio_means(1) midswing_ratio_means(1) 0] * 100;
+    patch_early_two_y = [0 0 1 1] + 1;
+    
+    patch_late_two_x = 100 + [midswing_ratio_means(1) 1 1 midswing_ratio_means(1)] * 100;
+    patch_late_two_y = [0 0 1 1] + 0;
+    
+    patch_early_one_handle = patch(patch_early_one_x, patch_early_one_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+    patch_late_one_handle = patch(patch_late_one_x, patch_late_one_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+    patch_early_two_handle = patch(patch_early_two_x, patch_early_two_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+    patch_late_two_handle = patch(patch_late_two_x, patch_late_two_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+
+%     patch_x = T_normalized/2 + [patch_x1 patch_x2 patch_x2 patch_x1];
+%     patch_handle = patch(patch_x, patch_y, double_stance_patch_color, 'EdgeColor', 'none', 'FaceAlpha', stance_alpha); 
+%     uistack(patch_handle, 'bottom')
+    
+    % mark midswing
+%     plot_handle = plot(midswing_ratio_means(1) * T_normalized/2 * [1 1], ylimits, 'color', midswing_color, 'linewidth', 3);
+%     uistack(plot_handle, 'bottom')
+%     plot_handle = plot((T_normalized/2 + midswing_ratio_means(2) * T_normalized/2) * [1 1], ylimits, 'color', midswing_color, 'linewidth', 3);
+%     uistack(plot_handle, 'bottom')
+    
+    if figure_settings.get('remove_labels')
+        set(get(gca, 'xaxis'), 'visible', 'off');
+        set(get(gca, 'yaxis'), 'visible', 'off');
+        set(get(gca, 'xlabel'), 'visible', 'off');
+        set(get(gca, 'ylabel'), 'visible', 'off');
+        set(get(gca, 'title'), 'visible', 'off');
+        set(gca, 'xticklabel', '');
+        set(gca, 'yticklabel', '');
+        set(gca, 'position', [0 0 1 1]);
+        legend(gca, 'hide');
+    end
+    
+    if figure_settings.get('save')
+        save_folder = [data_root filesep 'modelHumanComparison'];
+        filename = [save_folder filesep 'phases'];
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
+        
+        set(get(gca, 'xaxis'), 'visible', 'off');
+        set(get(gca, 'yaxis'), 'visible', 'off');
+        set(get(gca, 'xlabel'), 'visible', 'off');
+        set(get(gca, 'ylabel'), 'visible', 'off');
+        set(get(gca, 'title'), 'visible', 'off');
+        set(gca, 'xticklabel', '');
+        set(gca, 'yticklabel', '');
+        set(gca, 'position', [0 0 1 1]);
+        legend(gca, 'hide');
+        print(gcf, filename, '-dpdf')
+        close(gcf)
+    end
+    
+end
 
 
 

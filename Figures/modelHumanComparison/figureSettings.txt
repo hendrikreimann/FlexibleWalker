@@ -1,12 +1,14 @@
 
-variables_to_plot_header: variable_model, variable_human, title, y-axis label, save file name, y-axis lower limit, y-axis upper limit, x-axis lower limit, x-axis upper limit, direction pos, direction neg
+variables_to_plot_header: variable_model, variable_human, title, y-axis label, save file name, x_axis_lower_limit, x_axis_upper_limit, y_axis_lower_limit, y_axis_upper_limit, direction pos, direction neg
 variables_to_plot:
 {
-  left_hip_adduction, LHipAngleX, left hip, angle (?), lhipadd, ~, ~, ~, ~, blub, blah
-  left_hip_flexion, LHipAngleZ, left hip, angle (?), lhipflex, ~, ~, ~, ~, blub, blah
-  left_knee_flexion, LKneeAngleZ, left knee, angle (?), lkneeflex, ~, ~, ~, ~, blub, blah
-  left_ankle_flexion, LAnkleAngleZ, left ankle, angle (?), lankleflex, ~, ~, ~, ~, blub, blah
+  left_hip_adduction, LHipAngleX, left hip, angle (?), lhipadd, ~, ~, -10, 15, blub, blah
+  left_hip_flexion, LHipAngleZ, left hip, angle (?), lhipflex, ~, ~, -20, 60, blub, blah
+  left_knee_flexion, LKneeAngleZ, left knee, angle (?), lkneeflex, ~, ~, -10, 70, blub, blah
+  left_ankle_flexion, LAnkleAngleZ, left ankle, angle (?), lankleflex, ~, ~, -20, 20, blub, blah
 }
+
+make_behavioral_phase_figure: 1
 
 remove_labels: 0
 discrete_pushoff: 0
@@ -16,18 +18,16 @@ show_individual_data: 0
 
 discrete_variable_plot_style: box
 // discrete_variable_plot_style: bar
-dictate_axes: 0
+dictate_axes: 1
 save: 1
 smooth_connection_points: 1
 
 show_outliers: 0
 box_width: 0.2
 
-towards_color_HY: 203/255, 219/255, 42/255
-towards_color_OA: 83/255, 80/255, 162/255
 
-color_model: 93/255, 179/255, 0/255
-color_human: 156/255, 10/255, 179/255
+color_model: 0/255, 180/255, 230/255
+color_human: 255/255, 160/255, 69/255
 
 // stance_double_color: 0, 0.34, 1
 stance_double_color: 0, 0, 0
