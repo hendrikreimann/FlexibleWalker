@@ -1,38 +1,72 @@
-%close all
-hold on
-load out_random.mat
+setDataRoot
 
-load out_rnd_m10.mat
-load out_rnd_t10.mat
-load out_rnd_m14.mat
-load out_rnd_t14.mat
-load out_rnd_m18.mat
-load out_rnd_t18.mat
-load out_rnd_m20.mat
-load out_rnd_t22.mat
-load out_rnd_m25.mat
-load out_rnd_t20.mat
-load out_rnd_m22.mat
-load out_rnd_t25.mat
-load out_rnd_m30.mat
-load out_rnd_t30.mat
-load out_rnd_m40.mat
-load out_rnd_t40.mat
-load out_rnd_m50.mat
-load out_rnd_t50.mat
-load out_rnd_m60.mat
-load out_rnd_t60.mat
+load([data_root filesep 'fixedModel' filesep 'out_random.mat']);
 
-load out_rnd_m60b.mat
-load out_rnd_m50b.mat
-load out_rnd_m40b.mat
-load out_rnd_m30b.mat
-load out_rnd_m20b.mat
-load out_rnd_m10b.mat
-load out_rnd_m15b.mat
-load out_rnd_m18b.mat
-load out_rnd_m25b.mat
-load out_rnd_m22b.mat
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m10.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t10.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m14.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t14.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m18.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t18.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m20.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t22.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m25.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t20.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m22.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t25.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m30.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t30.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m40.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t40.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m50.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t50.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m60.mat']);
+% load([data_root filesep 'fixedModel' filesep 'out_rnd_t60.mat']);
+
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m60b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m50b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m40b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m30b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m20b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m10b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m15b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m18b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m25b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m22b.mat']);
+
+% load out_random.mat
+% 
+% load out_rnd_m10.mat
+% load out_rnd_t10.mat
+% load out_rnd_m14.mat
+% load out_rnd_t14.mat
+% load out_rnd_m18.mat
+% load out_rnd_t18.mat
+% load out_rnd_m20.mat
+% load out_rnd_t22.mat
+% load out_rnd_m25.mat
+% load out_rnd_t20.mat
+% load out_rnd_m22.mat
+% load out_rnd_t25.mat
+% load out_rnd_m30.mat
+% load out_rnd_t30.mat
+% load out_rnd_m40.mat
+% load out_rnd_t40.mat
+% load out_rnd_m50.mat
+% load out_rnd_t50.mat
+% load out_rnd_m60.mat
+% load out_rnd_t60.mat
+% 
+% load out_rnd_m60b.mat
+% load out_rnd_m50b.mat
+% load out_rnd_m40b.mat
+% load out_rnd_m30b.mat
+% load out_rnd_m20b.mat
+% load out_rnd_m10b.mat
+% load out_rnd_m15b.mat
+% load out_rnd_m18b.mat
+% load out_rnd_m25b.mat
+% load out_rnd_m22b.mat
 
 time_10=(0:0.001:10);
 time_14=(0:0.001:14);
@@ -48,44 +82,44 @@ time_60=(0:0.001:60);
 
 % Ball
 EEF_m10=interp1(out_rnd_m10.tout, out_rnd_m10.Ball_left, time_10);
-EEF_t10=interp1(out_rnd_t10.tout, out_rnd_t10.Ball_left, time_10);
+% EEF_t10=interp1(out_rnd_t10.tout, out_rnd_t10.Ball_left, time_10);
 EEF_m10b=interp1(out_rnd_m10b.tout, out_rnd_m10b.Ball_left, time_10);
 
 
 EEF_m14=interp1(out_rnd_m14.tout, out_rnd_m14.Ball_left, time_14);
-EEF_t14=interp1(out_rnd_t14.tout, out_rnd_t14.Ball_left, time_14);
+% EEF_t14=interp1(out_rnd_t14.tout, out_rnd_t14.Ball_left, time_14);
 EEF_tm14b=interp1(out_rnd_m15b.tout, out_rnd_m15b.Ball_left, time_15);
 
 EEF_m18=interp1(out_rnd_m18.tout, out_rnd_m18.Ball_left, time_18);
-EEF_t18=interp1(out_rnd_t18.tout, out_rnd_t18.Ball_left, time_18);
+% EEF_t18=interp1(out_rnd_t18.tout, out_rnd_t18.Ball_left, time_18);
 EEF_m18b=interp1(out_rnd_m18b.tout, out_rnd_m18b.Ball_left, time_18);
 
 EEF_m20=interp1(out_rnd_m20.tout, out_rnd_m20.Ball_left, time_20);
-EEF_t20=interp1(out_rnd_t20.tout, out_rnd_t20.Ball_left, time_20);
+% EEF_t20=interp1(out_rnd_t20.tout, out_rnd_t20.Ball_left, time_20);
 EEF_m20b=interp1(out_rnd_m20b.tout, out_rnd_m20b.Ball_left, time_20);
 
 EEF_m22=interp1(out_rnd_m22.tout, out_rnd_m22.Ball_left, time_22);
-EEF_t22=interp1(out_rnd_t22.tout, out_rnd_t22.Ball_left, time_22);
+% EEF_t22=interp1(out_rnd_t22.tout, out_rnd_t22.Ball_left, time_22);
 EEF_m22b=interp1(out_rnd_m22b.tout, out_rnd_m22b.Ball_left, time_22);
 
 EEF_m25=interp1(out_rnd_m25.tout, out_rnd_m25.Ball_left, time_25);
-EEF_t25=interp1(out_rnd_t25.tout, out_rnd_t25.Ball_left, time_25);
+% EEF_t25=interp1(out_rnd_t25.tout, out_rnd_t25.Ball_left, time_25);
 EEF_m25b=interp1(out_rnd_m25b.tout, out_rnd_m25b.Ball_left, time_25);
 
 EEF_m30=interp1(out_rnd_m30.tout, out_rnd_m30.Ball_left, time_30);
-EEF_t30=interp1(out_rnd_t30.tout, out_rnd_t30.Ball_left, time_30);
+% EEF_t30=interp1(out_rnd_t30.tout, out_rnd_t30.Ball_left, time_30);
 EEF_m30b=interp1(out_rnd_m30b.tout, out_rnd_m30b.Ball_left, time_30);
 
 EEF_m40=interp1(out_rnd_m40.tout, out_rnd_m40.Ball_left, time_40);
-EEF_t40=interp1(out_rnd_t40.tout, out_rnd_t40.Ball_left, time_40);
+% EEF_t40=interp1(out_rnd_t40.tout, out_rnd_t40.Ball_left, time_40);
 EEF_m40b=interp1(out_rnd_m40b.tout, out_rnd_m40b.Ball_left, time_40);
 
 EEF_m50=interp1(out_rnd_m50.tout, out_rnd_m50.Ball_left, time_50);
-EEF_t50=interp1(out_rnd_t50.tout, out_rnd_t50.Ball_left, time_50);
+% EEF_t50=interp1(out_rnd_t50.tout, out_rnd_t50.Ball_left, time_50);
 EEF_m50b=interp1(out_rnd_m50b.tout, out_rnd_m50b.Ball_left, time_50);
 
 EEF_m60=interp1(out_rnd_m60.tout, out_rnd_m60.Ball_left, time_60);
-EEF_t60=interp1(out_rnd_t60.tout, out_rnd_t60.Ball_left, time_60);
+% EEF_t60=interp1(out_rnd_t60.tout, out_rnd_t60.Ball_left, time_60);
 EEF_m60b=interp1(out_rnd_m60b.tout, out_rnd_m60b.Ball_left, time_60);
 
 
