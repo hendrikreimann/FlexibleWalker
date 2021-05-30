@@ -1,7 +1,8 @@
 % toggle flags
 plot_sagittal = 1;
-plot_lateral = 0;
+plot_lateral = 1;
 
+make_behavioral_phase_figure = 1;
 save_figures = 1;
 
 % set colors
@@ -11,27 +12,21 @@ color_sag_low = hex2rgb('#79c965');
 
 
 color_lat_05 = hex2rgb('#fcaf1c');
-color_lat_10 = hex2rgb('#fe9712');
-color_lat_15 = hex2rgb('#ff7e08');
-color_lat_20 = hex2rgb('#ff6200');
-color_med_05 = hex2rgb('#01ccfc');
-color_med_10 = hex2rgb('#20a8f2');
-color_med_15 = hex2rgb('#1e85e8');
-color_med_20 = hex2rgb('#0062dd');
+color_lat_10 = hex2rgb('#ff8b0d');
+color_lat_15 = hex2rgb('#ff6200');
 
+color_med_05 = hex2rgb('#01ccfc');
+color_med_10 = hex2rgb('#2196ed');
+color_med_15 = hex2rgb('#0062dd');
+
+
+% color_lat_20 = hex2rgb('#ff6200');
+% color_med_20 = hex2rgb('#0062dd');
 
 patch_color = [0 0 0];
 patch_alpha = 0.05;
 
-
-
-% ff6200
-% ff8b0d
-% fcaf1c
-% 0062dd
-% 2196ed
-% 01ccfc
-
+figure_size = [800 400];
 
 % Plotting options
 linewidth = 9;
@@ -110,31 +105,13 @@ if plot_sagittal
     
     % time
 
-    figure_size = [800 600];
     figure('position', [50 50 figure_size]);
     hold on
     plot(0:200, sagittal_15, 'linewidth', linewidth, 'color', color_sag_low, 'displayname', '15');
     plot(0:200, sagittal_20, 'linewidth', linewidth, 'color', color_sag_med, 'displayname', '20');
     plot(0:200, sagittal_25, 'linewidth', linewidth, 'color', color_sag_high, 'displayname', '25');
     
-    ylimits = [-0.05 0.2];
-    
-    patch_double_one_x = [0 pushoff_ratio_one pushoff_ratio_one 0] * 100;
-    patch_double_one_y = ylimits([2 2 1 1]);
-    patch_single_one_x = [pushoff_ratio_one 1 1 pushoff_ratio_one] * 100;
-    patch_single_one_y = ylimits([2 2 1 1]);
-    patch_double_two_x = 100 + [0 pushoff_ratio_two pushoff_ratio_two 0] * 100;
-    patch_double_two_y = ylimits([2 2 1 1]);
-    patch_single_two_x = 100 + [pushoff_ratio_two 1 1 pushoff_ratio_two] * 100;
-    patch_single_two_y = ylimits([1 1 2 2]);
-
-    patch_double_one_handle = patch(patch_double_one_x, patch_double_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-%     patch_single_one_handle = patch(patch_single_one_x, patch_single_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-    patch_double_two_handle = patch(patch_double_two_x, patch_double_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-%     patch_single_two_handle = patch(patch_single_two_x, patch_single_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-
-    uistack(patch_double_one_handle, 'bottom')
-    uistack(patch_double_two_handle, 'bottom')
+    ylimits = [-0.02 0.18];
     
     title('Right Ball')
     xlabel('time in s')
@@ -146,7 +123,7 @@ if plot_sagittal
     if save_figures
         save_folder = [data_root filesep 'obstacleAvoidance'];
         filename = [save_folder filesep 'obstacleSagittal'];
-        set(gcf, 'PaperUnits', 'points', 'PaperSize', [800 600]);
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
         print(gcf, filename, '-dpdf')
 
         set(get(gca, 'xaxis'), 'visible', 'off');
@@ -154,7 +131,7 @@ if plot_sagittal
         set(get(gca, 'xlabel'), 'visible', 'off');
         set(get(gca, 'ylabel'), 'visible', 'off');
         set(get(gca, 'title'), 'visible', 'off');
-        set(gca, 'Color', 'none');
+%         set(gca, 'Color', 'none');
         set(gca, 'xticklabel', '');
         set(gca, 'yticklabel', '');
         set(gca, 'position', [0 0 1 1]);
@@ -166,6 +143,49 @@ if plot_sagittal
    
     
     
+    if make_behavioral_phase_figure
+        % create figure
+        figure('position', [50 50 figure_size]); 
+        hold on
+        set(gca, 'FontSize', 16);
+        title('behavioral phases');
+
+        % first step early swing 
+        patch_double_one_x = [0 pushoff_ratio_one pushoff_ratio_one 0] * 100;
+        patch_double_one_y = [1 1 2 2];
+        patch_single_one_x = [pushoff_ratio_one 1 1 pushoff_ratio_one] * 100;
+        patch_single_one_y = [0 0 1 1];
+        patch_double_two_x = 100 + [0 pushoff_ratio_two pushoff_ratio_two 0] * 100;
+        patch_double_two_y = [1 1 2 2];
+        patch_single_two_x = 100 + [pushoff_ratio_two 1 1 pushoff_ratio_two] * 100;
+        patch_single_two_y = [0 0 1 1];
+
+
+        patch_double_one_handle = patch(patch_double_one_x, patch_double_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+        patch_single_one_handle = patch(patch_single_one_x, patch_single_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+        patch_double_two_handle = patch(patch_double_two_x, patch_double_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+        patch_single_two_handle = patch(patch_single_two_x, patch_single_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+
+        xlim([0 100 + pushoff_ratio_two*100])
+
+        if save_figures
+            save_folder = [data_root filesep 'obstacleAvoidance'];
+            set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
+
+            set(get(gca, 'xaxis'), 'visible', 'off');
+            set(get(gca, 'yaxis'), 'visible', 'off');
+            set(get(gca, 'xlabel'), 'visible', 'off');
+            set(get(gca, 'ylabel'), 'visible', 'off');
+            set(get(gca, 'title'), 'visible', 'off');
+            set(gca, 'xticklabel', '');
+            set(gca, 'yticklabel', '');
+            set(gca, 'position', [0 0 1 1]);
+            legend(gca, 'hide');
+            filename = [save_folder filesep 'obstacleSagittal_phases'];
+            print(gcf, filename, '-dpdf')
+        end
+
+    end
     
     
     
@@ -311,28 +331,11 @@ if plot_lateral
     delta_med_20 = med_20 - normal;
     
     % time
-
-    figure_size = [800 600];
     figure('position', [50 50 figure_size]); 
     hold on
     
-    ylimits = [-0.25 0.35];
+    ylimits = [-0.15 0.15];
     
-    patch_double_one_x = [0 pushoff_ratio_one pushoff_ratio_one 0] * 100;
-    patch_double_one_y = ylimits([2 2 1 1]);
-    patch_single_one_x = [pushoff_ratio_one 1 1 pushoff_ratio_one] * 100;
-    patch_single_one_y = ylimits([2 2 1 1]);
-    patch_double_two_x = 100 + [0 pushoff_ratio_two pushoff_ratio_two 0] * 100;
-    patch_double_two_y = ylimits([1 1 2 2]);
-    patch_single_two_x = 100 + [pushoff_ratio_two 1 1 pushoff_ratio_two] * 100;
-    patch_single_two_y = ylimits([1 1 2 2]);
-
-
-    patch_double_one_handle = patch(patch_double_one_x, patch_double_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-%     patch_single_one_handle = patch(patch_single_one_x, patch_single_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-    patch_double_two_handle = patch(patch_double_two_x, patch_double_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-%     patch_single_two_handle = patch(patch_single_two_x, patch_single_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
-
 %     plot(0:200, normal, 'linewidth', linewidth, 'color', [0.7 0.7 0.7], 'displayname', 'normal');
 %     plot(0:200, lat_05, 'linewidth', linewidth, 'color', color_lat_05, 'displayname', 'lat 05');
 %     plot(0:200, lat_10, 'linewidth', linewidth, 'color', color_lat_10, 'displayname', 'lat 10');
@@ -346,11 +349,11 @@ if plot_lateral
     plot(0:200, delta_lat_05, 'linewidth', linewidth, 'color', color_lat_05, 'displayname', 'lat 05');
     plot(0:200, delta_lat_10, 'linewidth', linewidth, 'color', color_lat_10, 'displayname', 'lat 10');
     plot(0:200, delta_lat_15, 'linewidth', linewidth, 'color', color_lat_15, 'displayname', 'lat 15');
-    plot(0:200, delta_lat_20, 'linewidth', linewidth, 'color', color_lat_20, 'displayname', 'lat 20');
+%     plot(0:200, delta_lat_20, 'linewidth', linewidth, 'color', color_lat_20, 'displayname', 'lat 20');
     plot(0:200, delta_med_05, 'linewidth', linewidth, 'color', color_med_05, 'displayname', 'med 05');
     plot(0:200, delta_med_10, 'linewidth', linewidth, 'color', color_med_10, 'displayname', 'med 10');
     plot(0:200, delta_med_15, 'linewidth', linewidth, 'color', color_med_15, 'displayname', 'med 15');
-    plot(0:200, delta_med_20, 'linewidth', linewidth, 'color', color_med_20, 'displayname', 'med 20');
+%     plot(0:200, delta_med_20, 'linewidth', linewidth, 'color', color_med_20, 'displayname', 'med 20');
     
     title('Right Ball')
     xlabel('time in s')
@@ -362,7 +365,7 @@ if plot_lateral
     if save_figures
         save_folder = [data_root filesep 'obstacleAvoidance'];
         filename = [save_folder filesep 'obstacleLateral'];
-        set(gcf, 'PaperUnits', 'points', 'PaperSize', [800 600]);
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
         print(gcf, filename, '-dpdf')
 
         set(get(gca, 'xaxis'), 'visible', 'off');
@@ -380,6 +383,50 @@ if plot_lateral
     end
    
     
+    if make_behavioral_phase_figure
+        % create figure
+        figure('position', [50 50 figure_size]); 
+        hold on
+        set(gca, 'FontSize', 16);
+        title('behavioral phases');
+
+        % first step early swing 
+        patch_double_one_x = [0 pushoff_ratio_one pushoff_ratio_one 0] * 100;
+        patch_double_one_y = [1 1 2 2];
+        patch_single_one_x = [pushoff_ratio_one 1 1 pushoff_ratio_one] * 100;
+        patch_single_one_y = [0 0 1 1];
+        patch_double_two_x = 100 + [0 pushoff_ratio_two pushoff_ratio_two 0] * 100;
+        patch_double_two_y = [1 1 2 2];
+        patch_single_two_x = 100 + [pushoff_ratio_two 1 1 pushoff_ratio_two] * 100;
+        patch_single_two_y = [0 0 1 1];
+
+
+        patch_double_one_handle = patch(patch_double_one_x, patch_double_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+        patch_single_one_handle = patch(patch_single_one_x, patch_single_one_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+        patch_double_two_handle = patch(patch_double_two_x, patch_double_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+        patch_single_two_handle = patch(patch_single_two_x, patch_single_two_y, patch_color, 'EdgeColor', 'none', 'FaceAlpha', patch_alpha); 
+
+        xlim([0 100 + pushoff_ratio_two*100])
+
+        if save_figures
+            save_folder = [data_root filesep 'obstacleAvoidance'];
+            set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
+
+            set(get(gca, 'xaxis'), 'visible', 'off');
+            set(get(gca, 'yaxis'), 'visible', 'off');
+            set(get(gca, 'xlabel'), 'visible', 'off');
+            set(get(gca, 'ylabel'), 'visible', 'off');
+            set(get(gca, 'title'), 'visible', 'off');
+            set(gca, 'xticklabel', '');
+            set(gca, 'yticklabel', '');
+            set(gca, 'position', [0 0 1 1]);
+            legend(gca, 'hide');
+            filename = [save_folder filesep 'obstacleLateral_phases'];
+            print(gcf, filename, '-dpdf')
+        end
+
+    end
+
     
     
     
@@ -420,8 +467,6 @@ if false % plot_lateral
     m15=m15(:,3)-m00(:,3);
     p00=m00(:,3)-m00(:,3);
     
-      
-    figure_size = [800 600];
     figure('position', [0 0 figure_size]); 
     hold on
     plot(time, p10, 'linewidth', linewidth);
@@ -436,7 +481,7 @@ if false % plot_lateral
     if save_figures
         save_folder = [data_root filesep 'obstacleAvoidance'];
         filename = [save_folder filesep 'obstacleLateral'];
-        set(gcf, 'PaperUnits', 'points', 'PaperSize', [800 600]);
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
         print(gcf, filename, '-dpdf')
 
         set(get(gca, 'xaxis'), 'visible', 'off');

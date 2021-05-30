@@ -1,41 +1,41 @@
 function [stdVec_GAS, stdVec_noGAS]=create_stdvec_joints(index)
-
+setDataRoot;
 
 % Torque Data
-load out_rnd_t10.mat
-load out_rnd_t14.mat
-load out_rnd_t18.mat
-load out_rnd_t20.mat
-load out_rnd_t22.mat
-load out_rnd_t25.mat
-load out_rnd_t30.mat
-load out_rnd_t40.mat
-load out_rnd_t50.mat
-load out_rnd_t60.mat
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t10.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t14.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t18.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t20.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t22.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t25.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t30.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t40.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t50.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_t60.mat']);
 
 % Movements with GAS
-load out_rnd_m10.mat
-load out_rnd_m14.mat
-load out_rnd_m18.mat
-load out_rnd_m20.mat
-load out_rnd_m22.mat
-load out_rnd_m25.mat
-load out_rnd_m30.mat
-load out_rnd_m40.mat
-load out_rnd_m50.mat
-load out_rnd_m60.mat
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m10.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m14.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m18.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m20.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m22.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m25.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m30.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m40.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m50.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m60.mat']);
 
 % Movements without GAS
-load out_rnd_m60b.mat
-load out_rnd_m50b.mat
-load out_rnd_m40b.mat
-load out_rnd_m30b.mat
-load out_rnd_m20b.mat
-load out_rnd_m10b.mat
-load out_rnd_m15b.mat
-load out_rnd_m18b.mat
-load out_rnd_m25b.mat
-load out_rnd_m22b.mat
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m60b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m50b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m40b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m30b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m20b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m10b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m15b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m18b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m25b.mat']);
+load([data_root filesep 'fixedModel' filesep 'out_rnd_m22b.mat']);
 
 
 time_10=(0:0.001:10);
