@@ -2,41 +2,62 @@
 load_data = 1;
 
 create_speed_figure = 1;
-create_cadence_figure = 0;
-save_figures = 0;
+create_cadence_figure = 1;
+save_figures = 1;
 
 % load data
 setDataRoot;
 data_velocity = load([data_root filesep 'velocityControl' filesep 'velocity.mat']);
 data_cadence = load([data_root filesep 'velocityControl' filesep 'cadence.mat']);
-data_time = load([data_root filesep 'velocityControl' filesep 'time.mat']);
+data_theta = load([data_root filesep 'velocityControl' filesep 'theta_tar.mat']);
 
 vel = data_velocity.vel;
 cad = data_cadence.cad;
-time = data_time.time;
+theta_tar = rad2deg(data_theta.theta_tar);
+xlimits = [6 8.5];
 
 % linear fit
-[py,Sy]=polyfit(time,vel,1);
-y1=polyval(py,time);
-[pcad,Scad]=polyfit(time,cad,1);
-y2=polyval(pcad,time);
+[pvel, Svel] = polyfit(theta_tar, vel, 1);
+y_vel = polyval(pvel, xlimits);
+[pcad, Scad] = polyfit(theta_tar, cad, 1);
+y_cad = polyval(pcad, xlimits);
+
+% calculate R^2 values
+yfit_vel = polyval(pvel, theta_tar);
+yresiduals_vel = vel - yfit_vel;
+SSresid_vel = sum(yresiduals_vel.^2);
+SStotal_vel = (length(vel)-1) * var(vel);
+rsqare_vel = 1 - SSresid_vel/SStotal_vel;
+
+yfit_cad = polyval(pcad, theta_tar);
+yresiduals_cad = cad - yfit_cad;
+SSresid_cad = sum(yresiduals_cad.^2);
+SStotal_cad = (length(cad)-1) * var(cad);
+rsqare_cad = 1 - SSresid_cad/SStotal_cad;
+
+
+
+
+color_fit = hex2rgb('#d23d00');
+color_data = hex2rgb('#0062dd');
+
+figure_size = [800 400];
 
 if create_speed_figure
     % speed figure
-    figure_size = [800 600];
-    figure('position', [0 0 figure_size])
+    figure('position', [50 50 figure_size])
     axes; hold on
-    scatter(time,vel,'linewidth', 2);
-    plot(time,y1, 'linewidth', 2);
+    plot(xlimits, y_vel, 'linewidth', 6, 'color', color_fit, 'DisplayName', 'data');
+    plot(theta_tar, vel, 'o', 'markersize', 12, 'markeredgecolor', 'none', 'markerfacecolor', color_data, 'DisplayName', 'fit');
     xlabel('Trunk Pitch Target Orientation in rad')
     ylabel('Walking Speed in m/s')
-    legend('Sample Data', 'Linear Fit')
+    legend('show')
+    xlim(xlimits);
 
     if save_figures
         save_folder = [data_root filesep 'velocityControl'];
         filename = [save_folder filesep 'velocity'];
-%         saveas(gcf, [filename '_filtered'], 'pdf')
-        set(gcf, 'PaperUnits', 'points', 'PaperSize', [800 600]);
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
         print(gcf, filename, '-dpdf')
 
         set(get(gca, 'xaxis'), 'visible', 'off');
@@ -48,27 +69,28 @@ if create_speed_figure
         set(gca, 'yticklabel', '');
         set(gca, 'position', [0 0 1 1]);
         legend(gca, 'hide');
-
         filename = [save_folder filesep 'velocity_clean'];
         print(gcf, filename, '-dpdf')
+        close(gcf)
     end
 end
 
 if create_cadence_figure
     % cadence figure
-    figure('position', [0 0 800 600])
+    figure('position', [50+figure_size(1) 50 figure_size])
     axes; hold on
-    scatter(time,cad,'linewidth', 2);
-    plot(time,y2, 'linewidth', 2);
+    plot(xlimits, y_cad * 60, 'linewidth', 6, 'color', color_fit, 'DisplayName', 'data');
+    plot(theta_tar, cad * 60, 'o', 'markersize', 12, 'markeredgecolor', 'none', 'markerfacecolor', color_data, 'DisplayName', 'fit');
     xlabel('Trunk Pitch Target Orientation in rad')
-    ylabel('Cadence in steps/s')
-    legend('Sample Data', 'Linear Fit')
+    ylabel('Cadence (steps/min)')
+    legend('show')
+    xlim(xlimits);
 
     if save_figures
         save_folder = [data_root filesep 'velocityControl'];
-        filename = [save_folder filesep 'velocity'];
-%         print(gcf, filename, '-djpeg', '-r300')
-        saveas(gcf, ['figures' filesep 'pdf' filesep filename '_filtered'], 'pdf')
+        filename = [save_folder filesep 'cadence'];
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
+        print(gcf, filename, '-dpdf')
 
         set(get(gca, 'xaxis'), 'visible', 'off');
         set(get(gca, 'yaxis'), 'visible', 'off');
@@ -79,9 +101,8 @@ if create_cadence_figure
         set(gca, 'yticklabel', '');
         set(gca, 'position', [0 0 1 1]);
         legend(gca, 'hide');
-
-        filename = [save_folder filesep 'velocity_clean'];
-        print(gcf, filename, '-djpeg', '-r300')
+        filename = [save_folder filesep 'cadence_clean'];
+        print(gcf, filename, '-dpdf')
         close(gcf)
     end
 end
