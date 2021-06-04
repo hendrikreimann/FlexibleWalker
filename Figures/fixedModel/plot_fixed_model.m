@@ -56,14 +56,16 @@ if plot_path
     % % Path with GAS
     load([data_root filesep 'fixedModel' filesep 'out_muscle_b.mat']);
     load([data_root filesep 'fixedModel' filesep 'out_torque.mat']);
+    load([data_root filesep 'fixedModel' filesep 'TargetVec.mat']);
     % Path wihout GAS
 %     load([data_root filesep 'fixedModel' filesep 'out_muscle.mat']);
 
     xlimits = [-0.25 0.75];
     ylimits = [-0.3 0.1];
+    color_targets = hex2rgb('#d23d00');
 
     figure('position', [50 50 figure_size]); hold on
-
+    plot(TargetVec(:, 1), TargetVec(:, 3), 'o', 'markerSize', 18, 'MarkerEdgeColor', 'none', 'MarkerFaceColor', color_targets);
     plot(out_muscle_b.AnklePosL(:,1), out_muscle_b.AnklePosL(:,3), 'color', color_model, 'linewidth', linewidth, 'DisplayName', 'ankle');
     plot(out_torque.AnklePosL(:,1), out_torque.AnklePosL(:,3), '--', 'color', [0.5 0.5 0.5], 'linewidth', 2, 'DisplayName', 'reference')
     
@@ -75,9 +77,10 @@ if plot_path
     xlim(xlimits);
     ylim(ylimits);
     
+    
     if save_figures
         save_folder = [data_root filesep 'fixedModel'];
-        filename = [save_folder filesep 'centerOutMovements'];
+        filename = [save_folder filesep 'centerOutMovements_2d'];
         set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
         print(gcf, filename, '-dpdf')
 %         print(gcf, filename, '-dtiff', '-r150')
@@ -91,7 +94,43 @@ if plot_path
         set(gca, 'yticklabel', '');
         set(gca, 'position', [0 0 1 1]);
         legend(gca, 'hide');
-        filename = [save_folder filesep 'centerOutMovements_clean'];
+        filename = [save_folder filesep 'centerOutMovements_2d_clean'];
+        print(gcf, filename, '-dpdf')
+%         print(gcf, filename, '-dtiff', '-r150')
+        close(gcf)
+    end
+    
+    
+    % plot 3d
+    figure_size = [1000 500];
+    figure('position', [50 450 figure_size]); hold on; axis equal
+    plot3(TargetVec(:, 1), TargetVec(:, 3), TargetVec(:, 2), 'o', 'markerSize', 18, 'MarkerEdgeColor', 'none', 'MarkerFaceColor', color_targets);
+    plot3(out_muscle_b.AnklePosL(:, 1), out_muscle_b.AnklePosL(:, 3), out_muscle_b.AnklePosL(:, 2), 'color', color_model, 'linewidth', linewidth, 'DisplayName', 'ankle');
+    plot3(out_torque.AnklePosL(:, 1), out_torque.AnklePosL(:, 3), out_torque.AnklePosL(:, 2), '--', 'color', [0.5 0.5 0.5], 'linewidth', 2, 'DisplayName', 'reference')
+    view(-111.1488, 2.2510)
+    grid on
+    xlabel('x')
+    ylabel('z')
+    zlabel('y')
+    
+    if save_figures
+        save_folder = [data_root filesep 'fixedModel'];
+        filename = [save_folder filesep 'centerOutMovements_3d'];
+        set(gcf, 'PaperUnits', 'points', 'PaperSize', figure_size);
+        print(gcf, filename, '-dpdf')
+%         print(gcf, filename, '-dtiff', '-r150')
+        
+        set(get(gca, 'xaxis'), 'visible', 'off');
+        set(get(gca, 'yaxis'), 'visible', 'off');
+        set(get(gca, 'zaxis'), 'visible', 'off');
+        set(get(gca, 'xlabel'), 'visible', 'off');
+        set(get(gca, 'ylabel'), 'visible', 'off');
+        set(get(gca, 'title'), 'visible', 'off');
+        set(gca, 'xticklabel', '');
+        set(gca, 'yticklabel', '');
+        set(gca, 'position', [0 0 1 1]);
+        legend(gca, 'hide');
+        filename = [save_folder filesep 'centerOutMovements_3d_clean'];
         print(gcf, filename, '-dpdf')
 %         print(gcf, filename, '-dtiff', '-r150')
         close(gcf)
