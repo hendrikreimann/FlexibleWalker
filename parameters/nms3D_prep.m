@@ -24,6 +24,7 @@ nms3D_cInit
 nms3D_icInit
 
 StepDur=0.5;
+t=20;
 
 assign_parameters;
 
