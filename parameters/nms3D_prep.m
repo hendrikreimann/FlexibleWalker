@@ -18,10 +18,10 @@ load('init_sensor_body.mat')
 load('init_sensor_world.mat')
 load('init_q_del.mat')
 
-run(['parameters' filesep 'nms3D_sInit'])
-run(['parameters' filesep 'nms3D_mInit'])
-run(['parameters' filesep 'nms3D_cInit'])
-run(['parameters' filesep 'nms3D_icInit'])
+nms3D_sInit
+nms3D_mInit
+nms3D_cInit
+nms3D_icInit
 
 StepDur=0.5;
 
